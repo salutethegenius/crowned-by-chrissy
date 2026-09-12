@@ -1,0 +1,439 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  LOCS
+  BRAIDS
+  SEW_INS
+  PONYTAILS
+}
+
+enum PricingType {
+  FIXED
+  STARTING_FROM
+  RANGE
+  QUOTE_REQUIRED
+}
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+}
+
+enum MediaVisibility {
+  PUBLIC
+  PRIVATE_INSPIRATION
+}
+
+enum AppointmentStatus {
+  REQUESTED
+  AWAITING_CLIENT_RESPONSE
+  AWAITING_DEPOSIT
+  CONFIRMED
+  COMPLETED
+  DECLINED
+  EXPIRED
+  CANCELLED
+  NO_SHOW
+}
+
+enum PaymentStatus {
+  NONE
+  PENDING
+  PAID
+  FAILED
+  EXCEPTION
+  OFFLINE_RECORDED
+  WAIVED
+}
+
+enum BookingPath {
+  DISCOVERY
+  DIRECT
+  OWNER
+}
+
+enum QuoteStatus {
+  DRAFT
+  PROPOSED
+  ACCEPTED
+  SUPERSEDED
+}
+
+enum CalendarSlotKind {
+  HOLD
+  CONFIRMED
+  BLOCKED
+}
+
+enum PaymentAttemptStatus {
+  CREATED
+  REDIRECTED
+  PENDING
+  VERIFIED
+  FAILED
+  EXCEPTION
+  CANCELLED_REDIRECT
+}
+
+enum CreditEntryType {
+  ORIGINAL_PAYMENT
+  CREDIT_ISSUED
+  CREDIT_ALLOCATED
+  ADJUSTMENT
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  PUSH
+  IN_APP
+}
+
+enum NotificationStatus {
+  QUEUED
+  SENT
+  DELIVERED
+  FAILED
+  CANCELLED
+}
+
+enum DepositType {
+  FIXED
+  PERCENTAGE
+}
+
+model Owner {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  isDemo       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model BusinessSettings {
+  id                         String      @id @default("singleton")
+  name                       String      @default("Crowned by Chrissy")
+  locationCity               String      @default("Freeport")
+  locationRegion             String      @default("Grand Bahama")
+  locationCountry            String      @default("The Bahamas")
+  phone                      String      @default("+12426462700")
+  whatsappUrl                String      @default("https://wa.me/12426462700")
+  timezone                   String      @default("America/Nassau")
+  currencyCode               String      @default("BSD")
+  currencySymbol             String      @default("B$")
+  address                    String?
+  addressVisible             Boolean     @default(false)
+  biography                  String?
+  portraitMediaId            String?
+  operatingHoursStart        String      @default("08:00")
+  operatingHoursEnd          String      @default("20:00")
+  workingDays                Json        @default("[]")
+  closures                   Json        @default("[]")
+  depositsEnabled            Boolean     @default(true)
+  depositType                DepositType @default(FIXED)
+  depositAmountMinor         Int?
+  depositPercentBps          Int?
+  defaultHoldMinutes         Int         @default(1440)
+  defaultPaymentDeadlineHours Int        @default(24)
+  fullPaymentOptional        Boolean     @default(false)
+  slotIntervalMinutes        Int         @default(30)
+  requestsOpen               Boolean     @default(false)
+  publicCopy                 Json        @default("{}")
+  notificationPrefs          Json        @default("{}")
+  cngMerchantReady           Boolean     @default(false)
+  createdAt                  DateTime    @default(now())
+  updatedAt                  DateTime    @updatedAt
+}
+
+model Service {
+  id                       String               @id @default(cuid())
+  slug                     String               @unique
+  name                     String
+  category                 Category
+  description              String               @default("")
+  pricingType              PricingType
+  priceMinMinor            Int?
+  priceMaxMinor            Int?
+  priceMaxOpenEnded        Boolean              @default(false)
+  displayNote              String?
+  durationMinutes          Int?
+  bufferMinutes            Int                  @default(0)
+  preparationInstructions  String?
+  featuredImageId          String?
+  active                   Boolean              @default(true)
+  displayOrder             Int                  @default(0)
+  createdAt                DateTime             @default(now())
+  updatedAt                DateTime             @updatedAt
+  optionGroups             ServiceOptionGroup[]
+  media                    Media[]
+  appointments             Appointment[]
+}
+
+model ServiceOptionGroup {
+  id           String          @id @default(cuid())
+  serviceId    String
+  service      Service         @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  name         String
+  required     Boolean         @default(false)
+  displayOrder Int             @default(0)
+  options      ServiceOption[]
+}
+
+model ServiceOption {
+  id           String              @id @default(cuid())
+  groupId      String
+  group        ServiceOptionGroup  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  label        String
+  note         String?
+  displayOrder Int                 @default(0)
+}
+
+model Media {
+  id            String          @id @default(cuid())
+  kind          MediaKind       @default(IMAGE)
+  visibility    MediaVisibility @default(PUBLIC)
+  slug          String          @unique
+  originalPath  String
+  derivedBase   String?
+  posterPath    String?
+  caption       String?
+  alt           String
+  captionsVtt   String?
+  category      Category?
+  serviceId     String?
+  service       Service?        @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  featured      Boolean         @default(false)
+  archived      Boolean         @default(false)
+  displayOrder  Int             @default(0)
+  focalX        Float           @default(0.5)
+  focalY        Float           @default(0.5)
+  width         Int?
+  height        Int?
+  durationSec   Int?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  appointments  Appointment[]   @relation("Inspiration")
+}
+
+model Client {
+  id            String         @id @default(cuid())
+  name          String
+  phone         String
+  email         String?
+  privateNotes  String         @default("")
+  isDemo        Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  appointments  Appointment[]
+  credits       CreditLedger[]
+
+  @@index([phone])
+  @@index([email])
+}
+
+model Appointment {
+  id                      String            @id @default(cuid())
+  publicToken             String            @unique
+  clientId                String
+  client                  Client            @relation(fields: [clientId], references: [id])
+  status                  AppointmentStatus @default(REQUESTED)
+  paymentStatus           PaymentStatus     @default(NONE)
+  path                    BookingPath
+  serviceId               String
+  service                 Service           @relation(fields: [serviceId], references: [id])
+  selectedOptions         Json              @default("{}")
+  requestedStart          DateTime
+  alternativeStart        DateTime?
+  notes                   String?
+  inspirationMediaId      String?
+  inspiration             Media?            @relation("Inspiration", fields: [inspirationMediaId], references: [id])
+  lookMediaId             String?
+  policyAcknowledged      Boolean           @default(false)
+  notificationPreference  String            @default("email")
+  approvedStart           DateTime?
+  durationMinutes         Int?
+  bufferMinutes           Int?
+  agreedPriceMinor        Int?
+  depositMinor            Int?
+  balanceMinor            Int?
+  paymentDeadlineAt       DateTime?
+  holdExpiresAt           DateTime?
+  customerNote            String?
+  ownerPrivateNote        String?
+  withoutDepositApproval  Boolean           @default(false)
+  cancellationReason      String?
+  ownerCancellationFlag   Boolean           @default(false)
+  isDemo                  Boolean           @default(false)
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  quotes                  Quote[]
+  calendarSlot            CalendarSlot?
+  paymentAttempts         PaymentAttempt[]
+  verifiedPayments        VerifiedPayment[]
+  creditEntries           CreditLedger[]
+  notifications           NotificationMessage[]
+  auditEvents             AuditEvent[]
+
+  @@index([status, holdExpiresAt])
+  @@index([status, approvedStart])
+  @@index([clientId])
+}
+
+model Quote {
+  id                String      @id @default(cuid())
+  appointmentId     String
+  appointment       Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  version           Int
+  status            QuoteStatus @default(PROPOSED)
+  serviceSnapshot   Json
+  priceMinor        Int?
+  depositMinor      Int?
+  startAt           DateTime
+  durationMinutes   Int
+  bufferMinutes     Int
+  customerNote      String?
+  requiresAcceptance Boolean    @default(false)
+  acceptedAt        DateTime?
+  createdAt         DateTime    @default(now())
+  paymentAttempts   PaymentAttempt[]
+
+  @@unique([appointmentId, version])
+}
+
+model CalendarSlot {
+  id            String           @id @default(cuid())
+  kind          CalendarSlotKind
+  appointmentId String?          @unique
+  appointment   Appointment?     @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  title         String?
+  startAt       DateTime
+  endAt         DateTime
+  createdAt     DateTime         @default(now())
+
+  @@index([startAt, endAt])
+}
+
+model PaymentAttempt {
+  id              String                @id @default(cuid())
+  appointmentId   String
+  appointment     Appointment           @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  quoteId         String?
+  quote           Quote?                @relation(fields: [quoteId], references: [id])
+  orderNumber     String                @unique
+  amountMinor     Int
+  payFull         Boolean               @default(false)
+  status          PaymentAttemptStatus  @default(CREATED)
+  passphrase      String
+  redirectUrl     String?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  verifiedPayment VerifiedPayment?
+}
+
+model VerifiedPayment {
+  id                 String         @id @default(cuid())
+  cngTransactionId   String         @unique
+  cngPaymentId       String?
+  paymentAttemptId   String         @unique
+  paymentAttempt     PaymentAttempt @relation(fields: [paymentAttemptId], references: [id])
+  appointmentId      String
+  appointment        Appointment    @relation(fields: [appointmentId], references: [id])
+  grossAmountMinor   Int
+  netAmountMinor     Int?
+  feeMinor           Int?
+  provider           String
+  source             String
+  exceptionReason    String?
+  rawPayload         Json
+  createdAt          DateTime       @default(now())
+}
+
+model CreditLedger {
+  id              String          @id @default(cuid())
+  clientId        String
+  client          Client          @relation(fields: [clientId], references: [id])
+  appointmentId   String?
+  appointment     Appointment?    @relation(fields: [appointmentId], references: [id])
+  type            CreditEntryType
+  amountMinor     Int
+  sourcePaymentId String?
+  allocationKey   String?         @unique
+  note            String?
+  createdAt       DateTime        @default(now())
+  createdBy       String
+
+  @@index([clientId])
+}
+
+model NotificationMessage {
+  id                String               @id @default(cuid())
+  eventType         String
+  channel           NotificationChannel
+  recipient         String
+  appointmentId     String?
+  appointment       Appointment?         @relation(fields: [appointmentId], references: [id])
+  templateKey       String
+  payload           Json
+  status            NotificationStatus   @default(QUEUED)
+  provider          String?
+  providerMessageId String?
+  error             String?
+  scheduledFor      DateTime             @default(now())
+  sentAt            DateTime?
+  idempotencyKey    String               @unique
+  attempts          Int                  @default(0)
+  isDemo            Boolean              @default(false)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+
+  @@index([status, scheduledFor])
+  @@index([appointmentId, eventType])
+}
+
+model AuditEvent {
+  id            String        @id @default(cuid())
+  actor         String
+  action        String
+  appointmentId String?
+  appointment   Appointment?  @relation(fields: [appointmentId], references: [id])
+  metadata      Json          @default("{}")
+  createdAt     DateTime      @default(now())
+
+  @@index([appointmentId])
+  @@index([createdAt])
+}
+
+model RateLimitHit {
+  key        String
+  windowStart DateTime
+  count      Int      @default(0)
+
+  @@id([key, windowStart])
+}
+
+model DemoGatewayPayment {
+  id            String   @id @default(cuid())
+  orderNumber   String   @unique
+  amountMinor   Int
+  processed     Boolean  @default(false)
+  specialId     String?
+  createdAt     DateTime @default(now())
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  ownerId   String
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+}
