@@ -25,7 +25,7 @@ export const IMAGE_MAP = [
   { file: "148d9648-97d0-4591-a58d-f60df71349cd.jpg", slug: "twists-burgundy-ends" },
   { file: "7f4e4bc7-628c-476a-99d5-06d017711d42.jpg", slug: "feed-in-braids-bun" },
   { file: "099799aa-7a1a-48ce-acb5-360e5904ad45.jpg", slug: "salon-hexagon-wall" },
-  { file: "c7a3768e-0d59-4eaf-b1e8-160263346a23.jpg", slug: "portrait-unconfirmed" },
+  { file: "c7a3768e-0d59-4eaf-b1e8-160263346a23.jpg", slug: "chrissy-portrait" },
 ] as const;
 
 async function derive(buf: Buffer, dir: string, extra?: { square?: number[] }) {

@@ -12,7 +12,7 @@ export function Logo({ className, light = false }: { className?: string; light?:
         height={48}
         className="h-12 w-12 rounded-full object-cover ring-1 ring-gold/50"
       />
-      <span className={cn("font-serif text-xl tracking-wide", light ? "text-cream" : "text-ink")}>
+      <span className={cn("font-serif text-2xl tracking-wide", light ? "text-cream" : "text-ink")}>
         Crowned <span className="italic font-normal">by</span> Chrissy
       </span>
     </Link>

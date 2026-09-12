@@ -28,6 +28,8 @@ export const metadata: Metadata = {
   applicationName: "Crowned by Chrissy",
 };
 
+export const dynamic = "force-dynamic";
+
 export const viewport: Viewport = {
   themeColor: "#151217",
   width: "device-width",

@@ -43,7 +43,7 @@ export default async function HomePage() {
         <div className="relative flex min-h-[100svh] flex-col">
           <SiteHeader dark />
           <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-end px-4 pb-16 pt-20 sm:px-6 sm:pb-24">
-            <p className="text-sm tracking-[0.25em] text-gold uppercase">Freeport, Grand Bahama</p>
+            <p className="tracking-[0.25em] text-gold uppercase">Freeport, Grand Bahama</p>
             <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-tight sm:text-7xl">
               {copy.heroHeadline || "Your next crown starts here."}
             </h1>
@@ -99,7 +99,7 @@ export default async function HomePage() {
                   <FavouriteButton id={look.id} />
                 </div>
                 <div className="space-y-2 p-5">
-                  <p className="text-sm uppercase tracking-widest text-plum">{look.category?.toLowerCase()}</p>
+                  <p className="uppercase tracking-widest text-plum">{look.category?.toLowerCase()}</p>
                   <h3 className="font-serif text-2xl text-ink">{look.caption}</h3>
                   <p className="text-muted">{look.service ? priceLabel(look.service) : "Ask Chrissy"}</p>
                   <Button href={`/book?path=discovery&look=${look.slug}`} variant="lilac" className="mt-2 w-full">
@@ -147,7 +147,7 @@ export default async function HomePage() {
                   <span className="text-plum">{priceLabel(service)}</span>
                 </summary>
                 <p className="mt-3 max-w-2xl text-muted">{service.description}</p>
-                {service.displayNote ? <p className="mt-2 text-sm text-muted">{service.displayNote}</p> : null}
+                {service.displayNote ? <p className="mt-2 text-muted">{service.displayNote}</p> : null}
               </details>
             ))}
           </div>
@@ -156,14 +156,16 @@ export default async function HomePage() {
 
       <section className="bg-cream px-4 py-20 sm:px-6" id="meet">
         <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2">
-          <div className="overflow-hidden rounded-3xl">
+          <div className="aspect-[3/4] overflow-hidden rounded-3xl">
             <Photo
-              base={salon[0]?.derivedBase || "/media/derived/salon-hexagon-wall"}
-              alt={salon[0]?.alt || "Crowned by Chrissy studio wall"}
+              base={site.portrait?.derivedBase || salon[0]?.derivedBase || "/media/derived/salon-hexagon-wall"}
+              alt={site.portrait?.alt || salon[0]?.alt || "Crowned by Chrissy studio wall"}
+              focalX={site.portrait?.focalX ?? 0.5}
+              focalY={site.portrait?.focalY ?? 0.5}
             />
           </div>
           <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-plum">Meet Chrissy</p>
+            <p className="uppercase tracking-[0.2em] text-plum">Meet Chrissy</p>
             <h2 className="mt-3 font-serif text-4xl text-ink">A chair in Freeport, made for your next look.</h2>
             <p className="mt-5 text-lg text-muted">
               {copy.meet ||

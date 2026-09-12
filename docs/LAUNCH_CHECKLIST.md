@@ -10,7 +10,7 @@ Do not enable production traffic until these are confirmed.
 - [ ] Default deposit amount or percent (must be greater than B$1.00 for CNG)
 - [ ] Default payment / hold deadline
 - [ ] Approved biography
-- [ ] Identified portrait (a branded portrait exists in assets but is unpublished until confirmed)
+- [x] Identified portrait (Chrissy, used on Meet Chrissy and the homepage)
 - [ ] Notification provider (Resend and/or Twilio)
 - [ ] Live Cash N’ Go merchant id + API key, sandbox test, then `CNG_LIVE_ENABLED=true`
 - [ ] Settlement currency confirmation

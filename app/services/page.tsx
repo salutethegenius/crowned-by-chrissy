@@ -29,12 +29,12 @@ export default async function ServicesPage() {
                   <li key={s.id} className="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <p className="font-medium text-ink">{s.name}</p>
-                      <p className="text-sm text-muted">{s.description}</p>
-                      {s.displayNote ? <p className="text-sm text-muted">{s.displayNote}</p> : null}
+                      <p className="text-muted">{s.description}</p>
+                      {s.displayNote ? <p className="text-muted">{s.displayNote}</p> : null}
                     </div>
                     <div className="flex items-center gap-3">
                       <p className="text-plum">{priceLabel(s)}</p>
-                      <Button href={`/book?path=direct&service=${s.slug}`} variant="lilac" className="min-h-11 px-4 text-sm">
+                      <Button href={`/book?path=direct&service=${s.slug}`} variant="lilac" className="min-h-11 px-4">
                         Request
                       </Button>
                     </div>

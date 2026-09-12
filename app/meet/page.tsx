@@ -13,8 +13,15 @@ export default async function MeetPage() {
     <div className="flex min-h-full flex-col bg-cream">
       <SiteHeader />
       <main className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-16 md:grid-cols-2">
-        <div className="overflow-hidden rounded-3xl">
-          <Photo base="/media/derived/salon-hexagon-wall" alt="Crowned By Chrissy studio wall" />
+        <div className="aspect-[3/4] overflow-hidden rounded-3xl bg-ink/5">
+          <Photo
+            base={site.portrait?.derivedBase || "/media/derived/salon-hexagon-wall"}
+            alt={site.portrait?.alt || "Crowned By Chrissy studio wall"}
+            focalX={site.portrait?.focalX ?? 0.5}
+            focalY={site.portrait?.focalY ?? 0.5}
+            priority
+            widthHint={1200}
+          />
         </div>
         <div>
           <h1 className="font-serif text-5xl text-ink">Meet Chrissy</h1>

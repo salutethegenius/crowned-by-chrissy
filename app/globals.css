@@ -11,6 +11,28 @@
   --color-muted: #6b646f;
   --font-sans: var(--font-outfit);
   --font-serif: var(--font-cormorant);
+  --text-xs: 16pt;
+  --text-xs--line-height: 1.5;
+  --text-sm: 16pt;
+  --text-sm--line-height: 1.5;
+  --text-base: 16pt;
+  --text-base--line-height: 1.55;
+  --text-lg: 18pt;
+  --text-lg--line-height: 1.5;
+  --text-xl: 22pt;
+  --text-xl--line-height: 1.35;
+  --text-2xl: 26pt;
+  --text-2xl--line-height: 1.25;
+  --text-3xl: 32pt;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 38pt;
+  --text-4xl--line-height: 1.15;
+  --text-5xl: 46pt;
+  --text-5xl--line-height: 1.1;
+  --text-6xl: 54pt;
+  --text-6xl--line-height: 1.05;
+  --text-7xl: 64pt;
+  --text-7xl--line-height: 1;
 }
 
 html,
@@ -21,6 +43,8 @@ body {
 
 body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16pt;
+  line-height: 1.55;
 }
 
 h1,

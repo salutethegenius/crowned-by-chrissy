@@ -16,7 +16,7 @@ export async function SiteFooter() {
           {site.address ? <p className="mt-1 text-cream/80">{site.address}</p> : null}
         </div>
         <div>
-          <p className="text-sm uppercase tracking-widest text-gold">Visit</p>
+          <p className="uppercase tracking-widest text-gold">Visit</p>
           <a className="mt-2 block min-h-11 py-1" href={`tel:${site.phone}`}>
             {displayPhone(site.phone)}
           </a>
@@ -25,7 +25,7 @@ export async function SiteFooter() {
           </a>
         </div>
         <div>
-          <p className="text-sm uppercase tracking-widest text-gold">Policies</p>
+          <p className="uppercase tracking-widest text-gold">Policies</p>
           <Link className="mt-2 block min-h-11 py-1" href="/policies">
             Booking & deposits
           </Link>

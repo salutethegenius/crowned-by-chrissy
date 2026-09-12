@@ -24,13 +24,13 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
         <Logo light={dark} />
         <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="text-sm tracking-wide hover:text-gold">
+            <Link key={l.href} href={l.href} className="tracking-wide hover:text-gold">
               {l.label}
             </Link>
           ))}
           <Link
             href="/book"
-            className="inline-flex min-h-11 items-center rounded-full bg-lilac px-5 text-sm font-medium text-ink hover:bg-cream"
+            className="inline-flex min-h-11 items-center rounded-full bg-lilac px-5 font-medium text-ink hover:bg-cream"
           >
             Book
           </Link>
@@ -38,7 +38,7 @@ export function SiteHeader({ dark = false }: { dark?: boolean }) {
         <div className="flex items-center gap-2 md:hidden">
           <Link
             href="/book"
-            className="inline-flex min-h-11 items-center rounded-full bg-lilac px-4 text-sm font-medium text-ink"
+            className="inline-flex min-h-11 items-center rounded-full bg-lilac px-4 font-medium text-ink"
           >
             Book
           </Link>

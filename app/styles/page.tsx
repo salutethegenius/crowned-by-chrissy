@@ -3,6 +3,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { Photo } from "@/components/Photo";
 import { FavouriteButton } from "@/components/FavouriteButton";
 import { Button } from "@/components/Button";
+import { VideoPlayer } from "@/components/VideoPlayer";
 import { publicGallery, publicVideos } from "@/lib/queries";
 import { priceLabel } from "@/lib/pricing";
 import { GalleryFilters } from "@/components/GalleryFilters";
@@ -27,7 +28,7 @@ export default async function StylesPage() {
               </div>
               <div className="p-4">
                 <p className="font-serif text-xl text-ink">{look.caption}</p>
-                <p className="text-sm text-muted">
+                <p className="text-muted">
                   {look.category} · {look.service ? priceLabel(look.service) : "Ask Chrissy"}
                 </p>
                 <Button href={`/book?path=discovery&look=${look.slug}`} variant="lilac" className="mt-3 w-full">
@@ -42,20 +43,14 @@ export default async function StylesPage() {
             <h2 className="font-serif text-3xl">Videos</h2>
             <div className="mt-6 grid gap-6 md:grid-cols-2">
               {videos.map((video) => (
-                <figure key={video.id}>
-                  <video
-                    controls
-                    playsInline
-                    preload="none"
-                    poster={video.posterPath || undefined}
-                    className="w-full rounded-3xl"
-                    aria-label={video.alt}
-                  >
-                    <source src={video.originalPath} />
-                    {video.captionsVtt ? <track kind="captions" src={video.captionsVtt} srcLang="en" label="English" /> : null}
-                  </video>
-                  <figcaption className="mt-2 text-muted">{video.caption}</figcaption>
-                </figure>
+                <VideoPlayer
+                  key={video.id}
+                  src={video.originalPath}
+                  poster={video.posterPath}
+                  alt={video.alt}
+                  caption={video.caption}
+                  captionsVtt={video.captionsVtt}
+                />
               ))}
             </div>
           </section>
