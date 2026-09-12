@@ -177,7 +177,6 @@ const GALLERY: Array<{
   { slug: "twists-burgundy-ends", alt: "Two-strand twists with burgundy ends", caption: "Twists with colour", category: "LOCS", serviceSlug: "loc-styling", displayOrder: 13 },
   { slug: "feed-in-braids-bun", alt: "Feed-in braids gathered into a bun", caption: "Feed-in braids bun", category: "BRAIDS", serviceSlug: "box-braids", featured: true, displayOrder: 14 },
   { slug: "salon-hexagon-wall", alt: "Crowned, By, and Chrissy hexagon signs above purple flowers", caption: "Crowned By Chrissy", category: null, displayOrder: 91 },
-  { slug: "portrait-unconfirmed", alt: "Portrait held until identity is confirmed", caption: "Unpublished portrait", category: null, displayOrder: 200, archived: true },
 ];
 
 export async function seedCore() {
@@ -309,6 +308,52 @@ export async function seedCore() {
       },
     });
   }
+
+  const legacyPortrait = await prisma.media.findUnique({ where: { slug: "portrait-unconfirmed" } });
+  const existingPortrait = await prisma.media.findUnique({ where: { slug: "chrissy-portrait" } });
+  if (legacyPortrait && !existingPortrait) {
+    await prisma.media.update({
+      where: { id: legacyPortrait.id },
+      data: { slug: "chrissy-portrait" },
+    });
+  } else if (legacyPortrait && existingPortrait) {
+    await prisma.media.delete({ where: { id: legacyPortrait.id } });
+  }
+
+  const portrait = await prisma.media.upsert({
+    where: { slug: "chrissy-portrait" },
+    update: {
+      alt: "Chrissy, owner of Crowned by Chrissy",
+      caption: "Chrissy",
+      archived: false,
+      featured: false,
+      category: null,
+      originalPath: "/media/derived/chrissy-portrait/original.jpg",
+      derivedBase: "/media/derived/chrissy-portrait",
+      displayOrder: 0,
+      focalX: 0.5,
+      focalY: 0.32,
+    },
+    create: {
+      slug: "chrissy-portrait",
+      kind: "IMAGE",
+      visibility: "PUBLIC",
+      alt: "Chrissy, owner of Crowned by Chrissy",
+      caption: "Chrissy",
+      archived: false,
+      featured: false,
+      originalPath: "/media/derived/chrissy-portrait/original.jpg",
+      derivedBase: "/media/derived/chrissy-portrait",
+      displayOrder: 0,
+      focalX: 0.5,
+      focalY: 0.32,
+    },
+  });
+
+  await prisma.businessSettings.update({
+    where: { id: "singleton" },
+    data: { portraitMediaId: portrait.id },
+  });
 
   console.log("Seeded business settings, services, and gallery records.");
 }

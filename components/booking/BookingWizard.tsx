@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useOffline } from "next/offline";
 import { Photo } from "@/components/Photo";
 import { Button } from "@/components/Button";
@@ -101,11 +101,16 @@ export function BookingWizard({
     policy: false,
   }));
 
+  const [ready, setReady] = useState(false);
+  const hydrated = useRef(false);
+
   useEffect(() => {
+    if (hydrated.current) return;
+    hydrated.current = true;
     const saved = sessionStorage.getItem(STORAGE);
-    if (saved) {
+    if (saved && !initialLook && !initialService && !initialCategory) {
       const parsed = JSON.parse(saved) as State;
-      setState((s) => ({ ...parsed, path: initialPath || parsed.path }));
+      if (parsed.path === initialPath) setState(parsed);
     } else if (initialLook) {
       const look = gallery.find((g) => g.slug === initialLook);
       if (look) {
@@ -123,12 +128,17 @@ export function BookingWizard({
     } else if (initialCategory) {
       setState((s) => ({ ...s, category: initialCategory as State["category"], step: 2 }));
     }
+    setReady(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    sessionStorage.setItem(STORAGE, JSON.stringify({ ...state, look: state.look ? { ...state.look, service: state.look.service } : undefined }));
-  }, [state]);
+    if (!ready) return;
+    sessionStorage.setItem(
+      STORAGE,
+      JSON.stringify({ ...state, look: state.look ? { ...state.look, service: state.look.service } : undefined }),
+    );
+  }, [ready, state]);
 
   const service = services.find((s) => s.id === state.serviceId) ?? state.look?.service ?? null;
   const looks = gallery.filter((g) => !state.category || g.category === state.category);
@@ -166,6 +176,14 @@ export function BookingWizard({
     );
   }
 
+  if (!ready) {
+    return (
+      <main className="mx-auto max-w-xl px-4 py-16">
+        <p>Loading your look…</p>
+      </main>
+    );
+  }
+
   return (
     <main className="mx-auto grid w-full max-w-6xl gap-8 px-4 py-10 lg:grid-cols-[1fr_280px]">
       <div>
@@ -177,13 +195,15 @@ export function BookingWizard({
         {state.path === "discovery" && state.step === 1 ? (
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             {CATS.map((cat) => (
-              <button
+                <button
                 key={cat.key}
                 type="button"
+                aria-label={cat.label}
+                data-testid={`category-${cat.key}`}
                 onClick={() => setState((s) => ({ ...s, category: cat.key, step: 2 }))}
                 className={`relative min-h-48 overflow-hidden rounded-3xl text-left ring-2 ${state.category === cat.key ? "ring-lilac" : "ring-transparent"}`}
               >
-                <Photo base={`/media/derived/${cat.slug}`} alt={cat.label} />
+                <Photo base={`/media/derived/${cat.slug}`} alt="" />
                 <span className="absolute inset-0 bg-ink/30" />
                 <span className="absolute bottom-4 left-4 font-serif text-2xl text-cream">{cat.label}</span>
               </button>
@@ -195,8 +215,9 @@ export function BookingWizard({
           <ul className="mt-8 space-y-3">
             {services.map((svc) => (
               <li key={svc.id}>
-                <button
+                  <button
                   type="button"
+                  data-testid={`service-${svc.slug}`}
                   onClick={() => setState((s) => ({ ...s, serviceId: svc.id, category: svc.category, step: 2 }))}
                   className={`w-full rounded-2xl border px-4 py-4 text-left ${state.serviceId === svc.id ? "border-lilac bg-lilac/20" : "border-ink/10 bg-white"}`}
                 >
@@ -212,10 +233,12 @@ export function BookingWizard({
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             {looks.map((look) => (
               <article key={look.id} className="overflow-hidden rounded-3xl bg-white">
-                <button type="button" className="relative block aspect-[3/4] w-full" onClick={() => setLightbox(look)}>
-                  <Photo base={look.derivedBase} alt={look.alt} focalX={look.focalX} focalY={look.focalY} />
+                <div className="relative">
+                  <button type="button" className="block aspect-[3/4] w-full" onClick={() => setLightbox(look)}>
+                    <Photo base={look.derivedBase} alt={look.alt} focalX={look.focalX} focalY={look.focalY} />
+                  </button>
                   <FavouriteButton id={look.id} />
-                </button>
+                </div>
                 <div className="p-4">
                   <p className="font-serif text-xl">{look.caption}</p>
                   <p className="text-sm text-muted">{look.service ? priceLabel(look.service) : "Ask Chrissy"}</p>

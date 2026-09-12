@@ -41,7 +41,17 @@ export default async function GalleryAdmin() {
                 <Photo base={item.derivedBase} alt={item.alt} focalX={item.focalX} focalY={item.focalY} />
               </div>
             ) : (
-              <p>Video: {item.caption} {item.posterPath ? "" : "(needs a poster image)"}</p>
+              <video
+                controls
+                playsInline
+                preload="metadata"
+                poster={item.posterPath || undefined}
+                className="w-full rounded-xl"
+                aria-label={item.alt}
+              >
+                <source src={item.originalPath} />
+                {item.captionsVtt ? <track kind="captions" src={item.captionsVtt} srcLang="en" label="English" /> : null}
+              </video>
             )}
             <form action={updateMedia} className="mt-3 space-y-2">
               <input type="hidden" name="id" value={item.id} />

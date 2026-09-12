@@ -9,12 +9,12 @@ import { headers } from "next/headers";
 export async function loginAction(formData: FormData) {
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0] || "local";
   const limited = await rateLimit(`login:${ip}`, 10);
-  if (!limited.ok) return { error: "Too many attempts. Try again in a few minutes." };
+  if (!limited.ok) redirect("/owner/login?error=rate");
   const email = String(formData.get("email") || "").trim().toLowerCase();
   const password = String(formData.get("password") || "");
   const owner = await prisma.owner.findUnique({ where: { email } });
   if (!owner || !(await verifyPassword(password, owner.passwordHash))) {
-    return { error: "That email or password didn’t match." };
+    redirect("/owner/login?error=auth");
   }
   await createOwnerSession(owner.id);
   const next = String(formData.get("next") || "/owner");

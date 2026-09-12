@@ -31,6 +31,13 @@ export async function publicSiteConfig() {
   const notices = notificationProviders();
   const days = workingDaysList(settings);
   const copy = (settings.publicCopy ?? {}) as Record<string, string>;
+  const portrait = settings.portraitMediaId
+    ? await prisma.media.findFirst({
+        where: { id: settings.portraitMediaId, archived: false },
+      })
+    : await prisma.media.findFirst({
+        where: { slug: "chrissy-portrait", archived: false },
+      });
   return {
     demo,
     name: settings.name,
@@ -43,7 +50,14 @@ export async function publicSiteConfig() {
     currencySymbol: settings.currencySymbol,
     address: settings.addressVisible ? settings.address : null,
     biography: settings.biography,
-    portraitMediaId: settings.portraitMediaId,
+    portrait: portrait
+      ? {
+          derivedBase: portrait.derivedBase,
+          alt: portrait.alt,
+          focalX: portrait.focalX,
+          focalY: portrait.focalY,
+        }
+      : null,
     hoursStart: settings.operatingHoursStart,
     hoursEnd: settings.operatingHoursEnd,
     workingDays: days,
