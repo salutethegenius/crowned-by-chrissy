@@ -1,7 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
-import { processCrown } from "./process-crown";
 
 const ASSETS = "/home/ubuntu/.cursor/projects/workspace/assets";
 const ORIGINALS = path.join(process.cwd(), "content", "originals");
@@ -69,7 +68,6 @@ export async function processImages() {
     path.join(process.cwd(), "public", "media", "derived", ".gitkeep"),
     "",
   );
-  await processCrown();
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

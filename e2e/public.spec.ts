@@ -3,7 +3,6 @@ import { test, expect } from "@playwright/test";
 test("homepage and gallery", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { name: /your next crown starts here/i })).toBeVisible();
-  await expect(page.getByTestId("hero-brand")).toBeVisible();
   await expect(page.getByRole("link", { name: "Find My Look" })).toBeVisible();
   await expect(page.getByRole("link", { name: "I Know What I Want" })).toBeVisible();
   await expect(page.getByRole("img", { name: /chrissy, owner of crowned by chrissy/i })).toBeVisible();

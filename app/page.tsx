@@ -9,7 +9,6 @@ import { priceLabel } from "@/lib/pricing";
 import { displayPhone } from "@/lib/phone";
 import { WEEKDAY_LABELS } from "@/lib/time";
 import { FavouriteButton } from "@/components/FavouriteButton";
-import { HeroBrand } from "@/components/HeroBrand";
 
 const CATEGORIES = [
   { key: "LOCS" as const, label: "Locs", slug: "starter-locs", href: "/book?path=discovery&category=LOCS" },
@@ -43,25 +42,22 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/55 to-ink" />
         <div className="relative flex min-h-[100svh] flex-col">
           <SiteHeader dark />
-          <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-between gap-10 px-4 pb-16 pt-8 sm:px-6 sm:pb-24 sm:pt-12">
-            <HeroBrand />
-            <div>
-              <p className="tracking-[0.25em] text-gold uppercase">Freeport, Grand Bahama</p>
-              <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-tight sm:text-7xl">
-                {copy.heroHeadline || "Your next crown starts here."}
-              </h1>
-              <p className="mt-6 max-w-xl text-lg text-cream/85">
-                {copy.heroSupport ||
-                  "Explore Chrissy’s work, find your look, and request your appointment in Freeport."}
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button href="/book?path=discovery" variant="lilac">
-                  Find My Look
-                </Button>
-                <Button href="/book?path=direct" variant="secondary">
-                  I Know What I Want
-                </Button>
-              </div>
+          <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-end px-4 pb-16 pt-20 sm:px-6 sm:pb-24">
+            <p className="tracking-[0.25em] text-gold uppercase">Freeport, Grand Bahama</p>
+            <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-tight sm:text-7xl">
+              {copy.heroHeadline || "Your next crown starts here."}
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-cream/85">
+              {copy.heroSupport ||
+                "Explore Chrissy’s work, find your look, and request your appointment in Freeport."}
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button href="/book?path=discovery" variant="lilac">
+                Find My Look
+              </Button>
+              <Button href="/book?path=direct" variant="secondary">
+                I Know What I Want
+              </Button>
             </div>
           </div>
         </div>
