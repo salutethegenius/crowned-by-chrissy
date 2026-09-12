@@ -44,7 +44,7 @@ export default async function HomePage() {
           <SiteHeader dark />
           <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-end px-4 pb-16 pt-20 sm:px-6 sm:pb-24">
             <p className="tracking-[0.25em] text-gold uppercase">Freeport, Grand Bahama</p>
-            <h1 className="mt-4 max-w-3xl font-serif text-5xl leading-tight sm:text-7xl">
+            <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight sm:text-6xl">
               {copy.heroHeadline || "Your next crown starts here."}
             </h1>
             <p className="mt-6 max-w-xl text-lg text-cream/85">
@@ -229,7 +229,7 @@ export default async function HomePage() {
 
       <section className="bg-ink px-4 py-20 text-cream sm:px-6">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="font-serif text-5xl">Ready for your next look?</h2>
+          <h2 className="font-serif text-4xl sm:text-5xl">Ready for your next look?</h2>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Button href="/book" variant="lilac">
               Request an appointment

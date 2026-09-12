@@ -15,7 +15,7 @@ export default async function ServicesPage() {
     <div className="flex min-h-full flex-col bg-tan">
       <SiteHeader />
       <main className="mx-auto w-full max-w-3xl px-4 py-16">
-        <h1 className="font-serif text-5xl text-ink">Services & pricing</h1>
+        <h1 className="font-serif text-4xl text-ink">Services & pricing</h1>
         <p className="mt-4 text-muted">
           Prices may vary depending on length and style. Hair is not included for braiding services.
         </p>

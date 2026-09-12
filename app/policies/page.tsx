@@ -8,7 +8,7 @@ export default function PoliciesPage() {
     <div className="flex min-h-full flex-col bg-cream">
       <SiteHeader />
       <main className="mx-auto w-full max-w-2xl px-4 py-16">
-        <h1 className="font-serif text-5xl text-ink">Booking & deposits</h1>
+        <h1 className="font-serif text-4xl text-ink">Booking & deposits</h1>
         <div className="mt-8 space-y-6 text-lg text-body">
           <p>Sending a request does not confirm your appointment. Chrissy reviews every request first.</p>
           <p>
