@@ -21,7 +21,7 @@ export default async function StylesPage() {
     <div className="flex min-h-full flex-col bg-cream">
       <SiteHeader />
       <main className="mx-auto w-full max-w-6xl px-4 py-16">
-        <h1 className="font-serif text-5xl text-ink">Style gallery</h1>
+        <h1 className="font-serif text-4xl text-ink">Style gallery</h1>
         <p className="mt-4 max-w-2xl text-muted">Real work from Chrissy’s chair. Save looks you love, then request one.</p>
         <GalleryFilters />
         <div className="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3">

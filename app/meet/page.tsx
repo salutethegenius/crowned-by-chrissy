@@ -29,7 +29,7 @@ export default async function MeetPage() {
           />
         </div>
         <div>
-          <h1 className="font-serif text-5xl text-ink">Meet Chrissy</h1>
+          <h1 className="font-serif text-4xl text-ink">Meet Chrissy</h1>
           <p className="mt-6 text-lg text-muted">
             {site.biography ||
               site.copy.meet ||
