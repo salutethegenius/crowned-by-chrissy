@@ -10,6 +10,10 @@ import { displayPhone } from "@/lib/phone";
 import { WEEKDAY_LABELS } from "@/lib/time";
 import { FavouriteButton } from "@/components/FavouriteButton";
 
+export const metadata = {
+  alternates: { canonical: "/" },
+};
+
 const CATEGORIES = [
   { key: "LOCS" as const, label: "Locs", slug: "starter-locs", href: "/book?path=discovery&category=LOCS" },
   { key: "BRAIDS" as const, label: "Braids", slug: "knotless-braids-long-back", href: "/book?path=discovery&category=BRAIDS" },

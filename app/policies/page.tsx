@@ -1,7 +1,12 @@
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 
-export const metadata = { title: "Booking & deposit policy" };
+export const metadata = {
+  title: "Booking & deposit policy",
+  description:
+    "How Crowned by Chrissy requests, approvals, deposits, and holds work in Freeport, Grand Bahama.",
+  alternates: { canonical: "/policies" },
+};
 
 export default function PoliciesPage() {
   return (

@@ -8,6 +8,7 @@ import { PwaRegister } from "@/components/owner/PwaRegister";
 export const metadata = {
   title: "Owner",
   manifest: "/owner/manifest.webmanifest",
+  robots: { index: false, follow: false, nocache: true },
 };
 
 export default async function OwnerLayout({ children }: { children: ReactNode }) {

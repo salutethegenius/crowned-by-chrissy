@@ -1,10 +1,13 @@
 import "server-only";
 
 import { Prisma } from "@prisma/client";
+import { Resend } from "resend";
 import { prisma } from "./db";
 import { isDemoMode, notificationProviders } from "./env";
 import { formatBusiness } from "./time";
 import { formatMoney } from "./money";
+import { renderEmailHtml } from "./email";
+import { SITE_NAME } from "./site";
 
 type EnqueueInput = {
   eventType: string;
@@ -199,24 +202,51 @@ export async function processOutbox(limit = 25) {
 }
 
 async function sendResend(to: string, subject: string, body: string) {
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: process.env.RESEND_FROM_EMAIL,
-      to,
-      subject,
-      text: body,
-    }),
-  });
-  if (!res.ok) {
-    throw new Error(`Resend rejected the message (${res.status}).`);
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  const from = process.env.RESEND_FROM_EMAIL?.trim();
+  if (!apiKey || !from) {
+    throw new Error("Email provider is not configured.");
   }
-  const json = (await res.json()) as { id?: string };
-  return json.id ?? "resend";
+  const resend = new Resend(apiKey);
+  const replyTo = process.env.RESEND_REPLY_TO?.trim();
+  const { data, error } = await resend.emails.send({
+    from,
+    to,
+    subject,
+    text: body,
+    html: renderEmailHtml({ subject, body }),
+    ...(replyTo ? { replyTo } : {}),
+  });
+  if (error) {
+    throw new Error(error.message || "Resend rejected the message.");
+  }
+  return data?.id ?? "resend";
+}
+
+export async function sendTestEmail(to: string) {
+  const providers = notificationProviders();
+  if (!providers.resend) {
+    throw new Error("Set RESEND_API_KEY and RESEND_FROM_EMAIL before sending a test.");
+  }
+  const subject = `Test email from ${SITE_NAME}`;
+  const body = `This is a test from the owner dashboard. If you received it, Resend is ready for appointment notifications.`;
+  const id = await sendResend(to, subject, body);
+  await prisma.notificationMessage.create({
+    data: {
+      eventType: "test_email",
+      channel: "EMAIL",
+      recipient: to,
+      templateKey: "test_email",
+      payload: { body, subject },
+      status: "SENT",
+      sentAt: new Date(),
+      provider: "resend",
+      providerMessageId: id,
+      isDemo: isDemoMode(),
+      idempotencyKey: `test_email:${Date.now()}:${to}`,
+    },
+  });
+  return id;
 }
 
 async function sendTwilio(to: string, body: string) {

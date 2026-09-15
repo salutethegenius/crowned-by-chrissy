@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Crowned by Chrissy">
+  <rect width="32" height="32" rx="8" fill="#151217"/>
+  <path fill="#c7a15a" d="M6.2 20.8 8.8 10.6l4.4 5.6L16 7.4l2.8 8.8 4.4-5.6 2.6 10.2H6.2Z"/>
+  <rect x="6.2" y="22.4" width="19.6" height="2.3" rx="0.7" fill="#c7a15a"/>
+  <circle cx="8.8" cy="10.6" r="1.35" fill="#e8c97a"/>
+  <circle cx="16" cy="7.4" r="1.55" fill="#e8c97a"/>
+  <circle cx="23.2" cy="10.6" r="1.35" fill="#e8c97a"/>
+</svg>

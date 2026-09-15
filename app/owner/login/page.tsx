@@ -1,6 +1,9 @@
 import { loginAction } from "./actions";
 
-export const metadata = { title: "Owner login" };
+export const metadata = {
+  title: "Owner login",
+  robots: { index: false, follow: false },
+};
 
 export default async function OwnerLoginPage({
   searchParams,

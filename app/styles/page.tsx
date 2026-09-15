@@ -8,7 +8,12 @@ import { publicGallery, publicVideos } from "@/lib/queries";
 import { priceLabel } from "@/lib/pricing";
 import { GalleryFilters } from "@/components/GalleryFilters";
 
-export const metadata = { title: "Styles" };
+export const metadata = {
+  title: "Styles",
+  description:
+    "Real locs, braids, sew-ins, and ponytails from Chrissy’s chair in Freeport. Save a look and request it.",
+  alternates: { canonical: "/styles" },
+};
 
 export default async function StylesPage() {
   const [gallery, videos] = await Promise.all([publicGallery(), publicVideos()]);

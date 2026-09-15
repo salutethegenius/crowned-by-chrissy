@@ -60,10 +60,16 @@ export async function processImages() {
     await fs.writeFile(originalDest, buf);
     await derive(buf, path.join(DERIVED, item.slug), item.slug === "brand-logo" ? { square: [192, 512] } : undefined);
   }
-  const logo = await fs.readFile(path.join(DERIVED, "brand-logo", "original.jpg"));
   await fs.copyFile(path.join(DERIVED, "brand-logo", "icon-192.png"), path.join(ICONS, "icon-192.png"));
   await fs.copyFile(path.join(DERIVED, "brand-logo", "icon-512.png"), path.join(ICONS, "icon-512.png"));
-  await sharp(logo).resize(32, 32, { fit: "cover" }).png().toFile(path.join(process.cwd(), "public", "favicon.png"));
+  await sharp(path.join(ICONS, "icon-192.png"))
+    .resize(180, 180)
+    .png()
+    .toFile(path.join(process.cwd(), "app", "apple-icon.png"));
+  await sharp(path.join(process.cwd(), "app", "icon.svg"))
+    .resize(32, 32)
+    .png()
+    .toFile(path.join(process.cwd(), "public", "favicon.png"));
   await fs.writeFile(
     path.join(process.cwd(), "public", "media", "derived", ".gitkeep"),
     "",

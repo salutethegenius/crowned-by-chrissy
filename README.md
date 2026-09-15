@@ -28,6 +28,12 @@ Demo mode uses labelled sample appointments and a simulated checkout. It never c
 
 Keep `DEMO_MODE=false`. Do not run `db:seed:demo`. Complete the checklist in `docs/LAUNCH_CHECKLIST.md`.
 
+Set `APP_URL` to the public HTTPS origin so search engines, Open Graph cards, and email links all point at the live site. Public routes are listed in `/sitemap.xml`; `/robots.txt` allows those pages and keeps `/owner`, `/appointments`, `/api`, `/pay`, and `/demo` out of the index.
+
+Email uses Resend (`RESEND_API_KEY`, `RESEND_FROM_EMAIL`). See [Notifications](docs/NOTIFICATIONS.md).
+
+The public site is tagged **Developed by KemisDigital.com**.
+
 ## Docs
 
 - [Setup](docs/SETUP.md)

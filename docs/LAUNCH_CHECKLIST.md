@@ -11,7 +11,7 @@ Do not enable production traffic until these are confirmed.
 - [ ] Default payment / hold deadline
 - [ ] Approved biography
 - [x] Identified portrait (Chrissy, used on Meet Chrissy and the homepage)
-- [ ] Notification provider (Resend and/or Twilio)
+- [ ] Notification credentials (Resend API key + verified From address; optional Twilio)
 - [ ] Live Cash N’ Go merchant id + API key, sandbox test, then `CNG_LIVE_ENABLED=true`
 - [ ] Settlement currency confirmation
 - [ ] Final policy review
@@ -20,6 +20,7 @@ Do not enable production traffic until these are confirmed.
 
 ## Before going live
 
+- [ ] `APP_URL` is the live HTTPS origin
 - [ ] `DEMO_MODE=false`
 - [ ] Do not run `db:seed:demo` on production
 - [ ] Change owner password
@@ -27,5 +28,6 @@ Do not enable production traffic until these are confirmed.
 - [ ] Working days + durations set, then enable online requests
 - [ ] Deposit defaults set if deposits stay on
 - [ ] Sandbox CNG payment verified with a tiny amount, then live flag
-- [ ] Send one test email/SMS to yourself
+- [ ] Resend domain verified; send one test email from Owner → Notifications
+- [ ] Confirm `/sitemap.xml` and `/robots.txt` on the live domain
 - [ ] Review public copy so no invented testimonials or years-in-business claims remain

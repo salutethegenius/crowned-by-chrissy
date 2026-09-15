@@ -9,7 +9,10 @@ import { livePaymentsAllowed } from "@/lib/payments/cng";
 import { isDemoMode } from "@/lib/env";
 import { priceLabel } from "@/lib/pricing";
 
-export const metadata = { title: "Your appointment" };
+export const metadata = {
+  title: "Your appointment",
+  robots: { index: false, follow: false, nocache: true },
+};
 
 export default async function AppointmentPage({
   params,

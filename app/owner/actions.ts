@@ -16,7 +16,7 @@ import { zonedDateTime } from "@/lib/time";
 import { dollarsToMinor } from "@/lib/money";
 import { AppError } from "@/lib/errors";
 import { prisma } from "@/lib/db";
-import { retryFailed } from "@/lib/notifications";
+import { retryFailed, sendTestEmail } from "@/lib/notifications";
 
 export async function approveOwnerAction(formData: FormData) {
   const owner = await requireOwner();
@@ -151,6 +151,19 @@ export async function retryNoticeAction(id: string) {
   await requireOwner();
   await retryFailed(id);
   revalidatePath("/owner/notifications");
+}
+
+export async function sendTestEmailAction(_prev: { ok?: string; error?: string } | null, formData: FormData) {
+  try {
+    const owner = await requireOwner();
+    const to = String(formData.get("email") || owner.email).trim();
+    if (!to) return { error: "Enter an email address." };
+    await sendTestEmail(to);
+    revalidatePath("/owner/notifications");
+    return { ok: `Sent a test email to ${to}. Check that inbox (and spam) for the branded message.` };
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Could not send the test email." };
+  }
 }
 
 export async function completeAction(id: string, status: "COMPLETED" | "NO_SHOW") {
