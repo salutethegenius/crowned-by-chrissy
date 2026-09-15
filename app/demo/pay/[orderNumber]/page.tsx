@@ -5,6 +5,11 @@ import { simulateDemoPayment, verifyAndApplyPayment } from "@/lib/payments/cng";
 import { formatMoney } from "@/lib/money";
 import { DemoPayButton } from "@/components/DemoPayButton";
 
+export const metadata = {
+  title: "Demo checkout",
+  robots: { index: false, follow: false },
+};
+
 export default async function DemoPayPage({ params }: { params: Promise<{ orderNumber: string }> }) {
   if (!isDemoMode()) notFound();
   const { orderNumber } = await params;

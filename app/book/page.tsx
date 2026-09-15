@@ -4,7 +4,12 @@ import { BookingWizard } from "@/components/booking/BookingWizard";
 import { publicGallery, publicServices } from "@/lib/queries";
 import { publicSiteConfig } from "@/lib/settings";
 
-export const metadata = { title: "Book" };
+export const metadata = {
+  title: "Book",
+  description:
+    "Request a Crowned by Chrissy appointment in Freeport. Choose a look or service — Chrissy approves before any deposit.",
+  alternates: { canonical: "/book" },
+};
 
 export default async function BookPage({
   searchParams,

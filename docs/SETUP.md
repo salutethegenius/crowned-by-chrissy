@@ -37,7 +37,9 @@ Copy `.env.example` to `.env`. Never put secrets in `NEXT_PUBLIC_*` variables.
 | `OWNER_EMAIL` / `OWNER_PASSWORD` | Created by seed when not in demo |
 | `CRON_SECRET` | Authorizes `/api/cron/tick` |
 | `CNG_*` | Cash N’ Go (see `docs/CNG.md`) |
-| `RESEND_*` / `TWILIO_*` / `VAPID_*` | Notification providers |
+| `APP_URL` | Public site origin (sitemap, Open Graph, canonical URLs, email links) |
+| `RESEND_API_KEY` / `RESEND_FROM_EMAIL` / `RESEND_REPLY_TO` | Email via Resend; disabled until set |
+| `TWILIO_*` / `VAPID_*` | SMS and owner push; optional |
 
 ## Jobs
 

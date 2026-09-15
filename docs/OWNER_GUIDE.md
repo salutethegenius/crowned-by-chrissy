@@ -29,6 +29,12 @@ If money arrives after a hold expires, it appears as an exception for you to res
 
 Upload photos or videos, set captions, category, linked service, and crop focal point. Videos need a poster and captions file when you have them. Empty video sections stay hidden on the public site.
 
+## Notifications
+
+Failed messages can be retried from **More → Notifications**. After Resend is configured, send a test email from that page to your own inbox before relying on live appointment emails.
+
+Push alerts are optional. They are only requested when you tap **Enable push alerts**.
+
 ## Clients
 
 Private notes never go out in customer messages. Retained deposits show as credit and can be applied once to a replacement appointment.

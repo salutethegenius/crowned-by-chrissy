@@ -1,5 +1,7 @@
 import "server-only";
 
+import { publicSiteUrl } from "./site";
+
 function bool(value: string | undefined, fallback = false) {
   if (value == null || value === "") return fallback;
   return ["1", "true", "yes", "on"].includes(value.toLowerCase());
@@ -10,7 +12,7 @@ export function isDemoMode() {
 }
 
 export function appUrl() {
-  return (process.env.APP_URL || "http://localhost:3000").replace(/\/$/, "");
+  return publicSiteUrl();
 }
 
 export function sessionSecret() {

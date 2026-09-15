@@ -4,7 +4,12 @@ import { publicServices } from "@/lib/queries";
 import { priceLabel } from "@/lib/pricing";
 import { Button } from "@/components/Button";
 
-export const metadata = { title: "Services & pricing" };
+export const metadata = {
+  title: "Services & pricing",
+  description:
+    "Locs, braids, sew-ins, and ponytails in Freeport. Browse Crowned by Chrissy services and request an appointment.",
+  alternates: { canonical: "/services" },
+};
 
 const ORDER = ["LOCS", "BRAIDS", "SEW_INS", "PONYTAILS"] as const;
 const LABELS = { LOCS: "Locs", BRAIDS: "Braids", SEW_INS: "Sew-ins", PONYTAILS: "Ponytails" };

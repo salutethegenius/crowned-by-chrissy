@@ -5,7 +5,12 @@ import { publicSiteConfig } from "@/lib/settings";
 import { displayPhone } from "@/lib/phone";
 import { Button } from "@/components/Button";
 
-export const metadata = { title: "Meet Chrissy" };
+export const metadata = {
+  title: "Meet Chrissy",
+  description:
+    "Meet Chrissy in Freeport, Grand Bahama. Locs, braids, sew-ins, and ponytails — request a time she reviews personally.",
+  alternates: { canonical: "/meet" },
+};
 
 export default async function MeetPage() {
   const site = await publicSiteConfig();

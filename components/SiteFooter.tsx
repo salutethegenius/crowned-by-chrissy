@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { publicSiteConfig } from "@/lib/settings";
 import { displayPhone } from "@/lib/phone";
+import { DEVELOPER } from "@/lib/site";
 
 export async function SiteFooter() {
   const site = await publicSiteConfig();
@@ -34,6 +35,11 @@ export async function SiteFooter() {
           </Link>
         </div>
       </div>
+      <p className="border-t border-cream/10 px-4 py-5 text-center text-sm text-cream/55 sm:px-6">
+        <a href={DEVELOPER.url} target="_blank" rel="noopener noreferrer" className="hover:text-gold">
+          {DEVELOPER.label}
+        </a>
+      </p>
     </footer>
   );
 }

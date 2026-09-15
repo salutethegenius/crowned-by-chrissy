@@ -26,6 +26,11 @@ export default function MorePage() {
         <button className="min-h-12 w-full rounded-full border">Sign out</button>
       </form>
       <InstallHint />
+      <p className="mt-10 text-center text-sm text-muted">
+        <a href="https://kemisdigital.com" target="_blank" rel="noopener noreferrer" className="hover:text-plum">
+          Developed by KemisDigital.com
+        </a>
+      </p>
     </main>
   );
 }
